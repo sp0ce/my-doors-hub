@@ -43,5 +43,7 @@ end
 workspace.ChildAdded:Connect(function(Child)
 	if Child.Name == "RushMoving" then
 		EntityNotification("", "Rush", "", "")
+	elseif Child.Name == "AmbushMoving" then
+		EntityNotification("", "Ambush", "", "")
 	end
 end)
