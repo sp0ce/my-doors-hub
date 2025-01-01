@@ -78,7 +78,7 @@ end
 
 function RoomScan(Room: Model)
 	pcall(function()
-		for _, v in pairs(Room:GetChildren()) do
+		for i, v in pairs(Room:GetChildren()) do
 			if v.Name == "Door" then
 				Esp(SH_ESP_DOOR and not v:GetAttribute("Opened"), v.Door, v.Door, "Door", Color3.new(1, 1, 1))
 			elseif v.Name == "Assets" then
@@ -87,8 +87,12 @@ function RoomScan(Room: Model)
 						Esp(SH_ESP_KEY, v.Hitbox, v, "Key", Color3.new(1, 1, 1))
 					elseif v.Name == "LeverForGate" then
 						Esp(SH_ESP_LEVER, v.Main, v.Main, "Lever", Color3.new(1, 1, 1))
+					elseif v.Name == "TimerLever" then
+						Esp(SH_ESP_LEVER, v.Hitbox, v, "Lever", Color3.new(1, 1, 1))
 					elseif v.Name == "Lighter" then
 						Esp(SH_ESP_LOOT, v.Handle, v, "Lighter", Color3.new(1, 1, 1))
+					elseif v.Name == "Smoothie" then
+						Esp(SH_ESP_LOOT, v.Handle, v, "Smoothie", Color3.new(1, 1, 1))
 					elseif v.Name == "GlitchCube" then
 						Esp(SH_ESP_LOOT, v.MainPart, v, "Glitch Fragment", Color3.new(1, 1, 1))
 					end
