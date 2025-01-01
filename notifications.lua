@@ -34,7 +34,7 @@ function EntityNotification(Icon: string, Title: string, Desc: string, Reason: s
 	TweenService:Create(Notification.Frame, TweenInfo.new(1, Enum.EasingStyle.Circular, Enum.EasingDirection.Out), {Position = UDim2.fromScale(0, 0)}):Play()
 	TweenService:Create(Notification.Frame.Glow, TweenInfo.new(1.5, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut), {ImageTransparency = 1}):Play()
 	Notification.Sound:Play()
-	task.wait(4)
+	task.wait(6)
 	TweenService:Create(Notification.Frame, TweenInfo.new(1, Enum.EasingStyle.Circular, Enum.EasingDirection.In), {Position = UDim2.fromScale(1.5, 0)}):Play()
 	task.wait(1)
 	Notification:Destroy()
