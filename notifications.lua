@@ -45,5 +45,7 @@ workspace.ChildAdded:Connect(function(Child)
 		EntityNotification("", "Rush", "", "")
 	elseif Child.Name == "AmbushMoving" then
 		EntityNotification("", "Ambush", "", "")
+	elseif Child.Name == "GlitchAmbush" then
+		EntityNotification("rbxassetid://126782836032454", "AR0xMBUSH", "", Child:GetAttribute("HallucinateTarget") .. " picked up Glitch Fragment")
 	end
 end)
