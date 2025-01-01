@@ -87,6 +87,10 @@ function RoomScan(Room: Model)
 						Esp(SH_ESP_KEY, v.Hitbox, v, "Key", Color3.new(1, 1, 1))
 					elseif v.Name == "LeverForGate" then
 						Esp(SH_ESP_LEVER, v.Main, v.Main, "Lever", Color3.new(1, 1, 1))
+					elseif v.Name == "Lighter" then
+						Esp(SH_ESP_LOOT, v.Handle, v, "Lighter", Color3.new(1, 1, 1))
+					elseif v.Name == "GlitchCube" then
+						Esp(SH_ESP_LOOT, v.MainPart, v, "Glitch Fragment", Color3.new(1, 1, 1))
 					end
 				end
 			elseif v.Name == "Sideroom" then
