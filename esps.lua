@@ -23,6 +23,7 @@ function Esp(Active, Object1, Object2, Text, Color)
 				GPS = Instance.new("BillboardGui", Object1)
 				GPS.AlwaysOnTop = true
 				GPS.Size = UDim2.fromOffset(200, 50)
+				GPS.Name = "ObjectGPS"
 
 				local TL = Instance.new("TextLabel", GPS)
 				TL.BackgroundTransparency = 1
