@@ -37,7 +37,9 @@ function RoomScan(Room: Model)
 end
 
 while task.wait(.5) do
-	for i, v in pairs(CurrentRooms:GetChildren()) do
-		RoomScan(v)
+	if SH_ESPS_ENABLED then
+		for i, v in pairs(CurrentRooms:GetChildren()) do
+			RoomScan(v)
+		end
 	end
 end
