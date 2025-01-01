@@ -8,17 +8,15 @@ local Root: BasePart = Character:WaitForChild("HumanoidRootPart")
 
 local CurrentRooms = workspace:WaitForChild("CurrentRooms")
 
+local GPSs = {}
+local HLs = {}
+local Clr = false
+
 function Esp(Active, Object1, Object2, Text, Color)
 	local GPS = Object1:FindFirstChild("ObjectGPS")
 	local HL = Object2:FindFirstChild("ObjectHL")
 	if Active then
-		if SH_ESPS_HL_ENABLED then
-			if not HL then
-				HL = Instance.new("Highlight", Object2)
-				HL.FillColor = Color
-				HL.OutlineColor = Color
-				HL.Name = "ObjectHL"
-			end
+		if SH_ESPS_GPS_ENABLED then
 			if not GPS then
 				GPS = Instance.new("BillboardGui", Object1)
 				GPS.AlwaysOnTop = true
@@ -46,21 +44,34 @@ function Esp(Active, Object1, Object2, Text, Color)
 				RunService.RenderStepped:Connect(function()
 					DL.Text = math.round((Object1.Position - Root.Position).Magnitude) .. "s"
 				end)
+				
+				table.insert(GPSs, GPS)
+			end
+		else
+			if GPS then
+				GPS:Destroy()
+			end
+		end
+		if SH_ESPS_HL_ENABLED then
+			if not HL then
+				HL = Instance.new("Highlight", Object2)
+				HL.FillColor = Color
+				HL.OutlineColor = Color
+				HL.Name = "ObjectHL"
+				
+				table.insert(HLs, HL)
 			end
 		else
 			if HL then
 				HL:Destroy()
 			end
-			if GPS then
-				GPS:Destroy()
-			end
 		end
 	else
-		if HL then
-			HL:Destroy()
-		end
 		if GPS then
 			GPS:Destroy()
+		end
+		if HL then
+			HL:Destroy()
 		end
 	end
 end
@@ -85,10 +96,25 @@ function RoomScan(Room: Model)
 	end)
 end
 
-while task.wait(.5) do
-	if SH_ESPS_ENABLED then
-		for i, v in pairs(CurrentRooms:GetChildren()) do
-			RoomScan(v)
+task.spawn(function()
+	while task.wait(.5) do
+		if SH_ESPS_ENABLED then
+			Clr = false
+			for i, v in pairs(CurrentRooms:GetChildren()) do
+				RoomScan(v)
+			end
+		elseif Clr == false then
+			Clr = true
+			for i, v in pairs(GPSs) do
+				if v then
+					v:Destroy()
+				end
+			end
+			for i, v in pairs(HLs) do
+				if v then
+					v:Destroy()
+				end
+			end
 		end
 	end
-end
+end)
