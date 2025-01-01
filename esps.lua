@@ -1,7 +1,9 @@
 local Players = game:GetService("Players")
 
 local Player = Players.LocalPlayer
+
 local Character = Player.Character or Player.CharacterAdded:Wait()
+local Root: BasePart = Character:WaitForChild("HumanoidRootPart")
 
 local CurrentRooms = workspace:WaitForChild("CurrentRooms")
 
@@ -34,6 +36,19 @@ function AddGps(Part: BasePart, Color: Color3, Text: string)
 		TextLabel.TextColor3 = Color
 		TextLabel.TextScaled = true
 		TextLabel.TextStrokeTransparency = .8
+		
+		local DistanceLabel = Instance.new("TextLabel", BillboardGui)
+		DistanceLabel.BackgroundTransparency = 1
+		DistanceLabel.Position = UDim2.fromScale(0, .5)
+		DistanceLabel.Size = UDim2.fromScale(1, .5)
+		DistanceLabel.Font = Enum.Font.Oswald
+		DistanceLabel.TextColor3 = Color
+		DistanceLabel.TextScaled = true
+		DistanceLabel.TextStrokeTransparency = .8
+		
+		Root:GetPropertyChangedSignal("Position"):Connect(function()
+			DistanceLabel.Text = math.round((Part.Position - Root.Position).Magnitude) .. "s"
+		end)
 	end
 end
 
@@ -48,12 +63,12 @@ function RoomScan(Room: Model)
 	pcall(function()
 		for _, v in pairs(Room:GetChildren()) do
 			if v.Name == "Door" then
-				if v:GetAttribute("Opened") then
-					RemoveHighlight(v.Door)
-					RemoveGps(v.Door)
-				else
+				if SH_ESPS_DOORS and not v:GetAttribute("Opened") then
 					AddHighlight(v.Door, Color3.new(1, 1, 1))
 					AddGps(v.Door, Color3.new(1, 1, 1), "Door")
+				else
+					RemoveHighlight(v.Door)
+					RemoveGps(v.Door)
 				end
 			elseif v.Name == "Assets" then
 				for _, v in pairs(v:GetDescendants()) do
@@ -62,7 +77,13 @@ function RoomScan(Room: Model)
 					elseif v.Name == "ChestBoxLocked" then
 						AddHighlight(v.Main, Color3.new(1, 1, 1))
 					elseif v.Name == "KeyObtain" then
-						AddHighlight(v.Hitbox, Color3.new(1, 1, 1))
+						if SH_ESPS_KEYS then
+							AddHighlight(v, Color3.new(1, 1, 1))
+						else
+							RemoveHighlight(v)
+						end
+					elseif v.Name == "Flashlight" then
+						AddHighlight(v, Color3.new(1, 1, 1))
 					end
 				end
 			elseif v.Name == "Sideroom" then
