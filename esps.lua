@@ -1,3 +1,4 @@
+local RunService = game:GetService("RunService")
 local Players = game:GetService("Players")
 
 local Player = Players.LocalPlayer
@@ -46,7 +47,7 @@ function AddGps(Part: BasePart, Color: Color3, Text: string)
 		DistanceLabel.TextScaled = true
 		DistanceLabel.TextStrokeTransparency = .8
 		
-		Root:GetPropertyChangedSignal("Position"):Connect(function()
+		RunService.RenderStepped:Connect(function()
 			DistanceLabel.Text = math.round((Part.Position - Root.Position).Magnitude) .. "s"
 		end)
 	end
@@ -79,8 +80,10 @@ function RoomScan(Room: Model)
 					elseif v.Name == "KeyObtain" then
 						if SH_ESPS_KEYS then
 							AddHighlight(v, Color3.new(1, 1, 1))
+							AddGps(v.Hitbox, Color3.new(1, 1, 1), "Key")
 						else
 							RemoveHighlight(v)
+							RemoveGps(v.Hitbox)
 						end
 					elseif v.Name == "Flashlight" then
 						AddHighlight(v, Color3.new(1, 1, 1))
