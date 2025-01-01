@@ -20,7 +20,7 @@ function Esp(Active, Object1, Object2, Text, Color)
 				HL.Name = "ObjectHL"
 			end
 			if not GPS then
-				GPS = Instance.new("BillboardGui", Part)
+				GPS = Instance.new("BillboardGui", Object1)
 				GPS.AlwaysOnTop = true
 				GPS.Size = UDim2.fromOffset(200, 50)
 
