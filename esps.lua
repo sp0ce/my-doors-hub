@@ -85,6 +85,14 @@ function RoomScan(Room: Model)
 							RemoveHighlight(v)
 							RemoveGps(v.Hitbox)
 						end
+					elseif v.Name == "LeverForGate" then
+						if 1 == 1 then
+							AddHighlight(v.Main, Color3.new(1, 1, 1))
+							AddGps(v.Main, Color3.new(1, 1, 1), "Lever")
+						else
+							RemoveHighlight(v.Main)
+							RemoveGps(v.Main)
+						end
 					elseif v.Name == "Flashlight" then
 						AddHighlight(v, Color3.new(1, 1, 1))
 					end
