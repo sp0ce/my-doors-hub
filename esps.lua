@@ -8,55 +8,59 @@ local Root: BasePart = Character:WaitForChild("HumanoidRootPart")
 
 local CurrentRooms = workspace:WaitForChild("CurrentRooms")
 
-function AddHighlight(Part: BasePart, Color: Color3)
-	if Part and not Part:FindFirstChild("Highlight") then
-		local Highlight = Instance.new("Highlight", Part)
-		Highlight.FillColor = Color
-		Highlight.OutlineColor = Color
-	end
-end
+function Esp(Active, Object1, Object2, Text, Color)
+	local GPS = Object1:FindFirstChild("ObjectGPS")
+	local HL = Object2:FindFirstChild("ObjectHL")
+	if Active then
+		if SH_ESPS_HL_ENABLED then
+			if not HL then
+				HL = Instance.new("Highlight", Object2)
+				HL.FillColor = Color
+				HL.OutlineColor = Color
+				HL.Name = "ObjectHL"
+			end
+			if not GPS then
+				GPS = Instance.new("BillboardGui", Part)
+				GPS.AlwaysOnTop = true
+				GPS.Size = UDim2.fromOffset(200, 50)
 
-function RemoveHighlight(Part: BasePart)
-	local Highlight = Part:FindFirstChild("Highlight")
-	if Highlight then
-		Highlight:Destroy()
-	end
-end
+				local TL = Instance.new("TextLabel", GPS)
+				TL.BackgroundTransparency = 1
+				TL.Size = UDim2.fromScale(1, .5)
+				TL.Font = Enum.Font.Oswald
+				TL.Text = Text
+				TL.TextColor3 = Color
+				TL.TextScaled = true
+				TL.TextStrokeTransparency = .8
 
-function AddGps(Part: BasePart, Color: Color3, Text: string)
-	if Part and not Part:FindFirstChild("BillboardGui") then
-		local BillboardGui = Instance.new("BillboardGui", Part)
-		BillboardGui.AlwaysOnTop = true
-		BillboardGui.Size = UDim2.fromOffset(200, 50)
-		
-		local TextLabel = Instance.new("TextLabel", BillboardGui)
-		TextLabel.BackgroundTransparency = 1
-		TextLabel.Size = UDim2.fromScale(1, .5)
-		TextLabel.Font = Enum.Font.Oswald
-		TextLabel.Text = Text
-		TextLabel.TextColor3 = Color
-		TextLabel.TextScaled = true
-		TextLabel.TextStrokeTransparency = .8
-		
-		local DistanceLabel = Instance.new("TextLabel", BillboardGui)
-		DistanceLabel.BackgroundTransparency = 1
-		DistanceLabel.Position = UDim2.fromScale(0, .5)
-		DistanceLabel.Size = UDim2.fromScale(1, .5)
-		DistanceLabel.Font = Enum.Font.Oswald
-		DistanceLabel.TextColor3 = Color
-		DistanceLabel.TextScaled = true
-		DistanceLabel.TextStrokeTransparency = .8
-		
-		RunService.RenderStepped:Connect(function()
-			DistanceLabel.Text = math.round((Part.Position - Root.Position).Magnitude) .. "s"
-		end)
-	end
-end
+				local DL = Instance.new("TextLabel", GPS)
+				DL.BackgroundTransparency = 1
+				DL.Position = UDim2.fromScale(0, .5)
+				DL.Size = UDim2.fromScale(1, .5)
+				DL.Font = Enum.Font.Oswald
+				DL.TextColor3 = Color
+				DL.TextScaled = true
+				DL.TextStrokeTransparency = .8
 
-function RemoveGps(Part: BasePart)
-	local BillboardGui = Part:FindFirstChild("BillboardGui")
-	if BillboardGui then
-		BillboardGui:Destroy()
+				RunService.RenderStepped:Connect(function()
+					DL.Text = math.round((Object1.Position - Root.Position).Magnitude) .. "s"
+				end)
+			end
+		else
+			if HL then
+				HL:Destroy()
+			end
+			if GPS then
+				GPS:Destroy()
+			end
+		end
+	else
+		if HL then
+			HL:Destroy()
+		end
+		if GPS then
+			GPS:Destroy()
+		end
 	end
 end
 
@@ -64,37 +68,13 @@ function RoomScan(Room: Model)
 	pcall(function()
 		for _, v in pairs(Room:GetChildren()) do
 			if v.Name == "Door" then
-				if SH_ESPS_DOORS and not v:GetAttribute("Opened") then
-					AddHighlight(v.Door, Color3.new(1, 1, 1))
-					AddGps(v.Door, Color3.new(1, 1, 1), "Door")
-				else
-					RemoveHighlight(v.Door)
-					RemoveGps(v.Door)
-				end
+				Esp(SH_ESP_DOOR and not v:GetAttribute("Opened"), v.Door, v.Door, "Door", Color3.new(1, 1, 1))
 			elseif v.Name == "Assets" then
 				for _, v in pairs(v:GetDescendants()) do
-					if v.Name == "ChestBox" then
-						AddHighlight(v.Main, Color3.new(1, 1, 1))
-					elseif v.Name == "ChestBoxLocked" then
-						AddHighlight(v.Main, Color3.new(1, 1, 1))
-					elseif v.Name == "KeyObtain" then
-						if SH_ESPS_KEYS then
-							AddHighlight(v, Color3.new(1, 1, 1))
-							AddGps(v.Hitbox, Color3.new(1, 1, 1), "Key")
-						else
-							RemoveHighlight(v)
-							RemoveGps(v.Hitbox)
-						end
+					if v.Name == "KeyObtain" then
+						Esp(SH_ESP_KEY, v.Hitbox, v, "Key", Color3.new(1, 1, 1))
 					elseif v.Name == "LeverForGate" then
-						if 1 == 1 then
-							AddHighlight(v.Main, Color3.new(1, 1, 1))
-							AddGps(v.Main, Color3.new(1, 1, 1), "Lever")
-						else
-							RemoveHighlight(v.Main)
-							RemoveGps(v.Main)
-						end
-					elseif v.Name == "Flashlight" then
-						AddHighlight(v, Color3.new(1, 1, 1))
+						Esp(SH_ESP_LEVER, v.Main, v.Main, "Lever", Color3.new(1, 1, 1))
 					end
 				end
 			elseif v.Name == "Sideroom" then
