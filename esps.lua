@@ -79,9 +79,9 @@ end
 function RoomScan(Room: Model)
 	for i, v in pairs(Room:GetChildren()) do
 		if v.Name == "Door" then
-			pcall(function() Esp(SH_ESP_DOOR and not v:GetAttribute("Opened"), v.Door, v.Door, "Door", Color3.new(1, 1, 1)) end)
+			pcall(function() Esp(SH_ESP_DOOR, v.Collision, v.Door, "Door", Color3.new(1, 1, 1)) end)
 		elseif v.Name == "Assets" then
-			for _, v in pairs(v:GetDescendants()) do
+			for i, v in pairs(v:GetDescendants()) do
 				if v.Name == "KeyObtain" then
 					pcall(function() Esp(SH_ESP_KEY, v.Hitbox, v, "Key", Color3.new(1, 1, 1)) end)
 				elseif v.Name == "LeverForGate" then
