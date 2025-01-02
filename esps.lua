@@ -40,7 +40,7 @@ function Esp(Active, Part, Text, Color)
 				DL.TextStrokeTransparency = .8
 
 				RunService.RenderStepped:Connect(function()
-					DL.Text = math.round((Object1.Position - Root.Position).Magnitude) .. "s"
+					DL.Text = math.round((Part.Position - Root.Position).Magnitude) .. "s"
 				end)
 				
 				table.insert(GPSs, GPS)
