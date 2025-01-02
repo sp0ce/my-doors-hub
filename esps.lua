@@ -45,6 +45,10 @@ function Esp(Active, Object1, Object2, Text, Color)
 					DL.Text = math.round((Object1.Position - Root.Position).Magnitude) .. "s"
 				end)
 				
+				GPS:GetPropertyChangedSignal("Parent"):Once(function()
+					GPS:Destroy()
+				end)
+				
 				table.insert(GPSs, GPS)
 			end
 		else
@@ -58,6 +62,10 @@ function Esp(Active, Object1, Object2, Text, Color)
 				HL.FillColor = Color
 				HL.OutlineColor = Color
 				HL.Name = "ObjectHL"
+				
+				HL:GetPropertyChangedSignal("Parent"):Once(function()
+					HL:Destroy()
+				end)
 				
 				table.insert(HLs, HL)
 			end
